@@ -1,4 +1,8 @@
-FROM microsoft/windowsservercore
+FROM  mcr.microsoft.com/windows/servercore:ltsc2019
+#Create a d drive with a symbolic link to c: ensure that we can volume mount to c: as mounting to d: does not work
+RUN powershell -NoProfile -Command \
+    New-Item -ItemType directory -Path C:\drived ; \
+    New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\DOS Devices' -Name 'D:'  -Value '\??\C:\drived' -PropertyType String;
 
 LABEL maintainer "Perry Skountrianos"
 
